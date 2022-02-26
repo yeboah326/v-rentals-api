@@ -12,5 +12,3 @@ migrate = Migrate()
 jwt = JWTManager()
 limiter = Limiter(key_func=get_remote_address)
 fake = Faker()
-
-

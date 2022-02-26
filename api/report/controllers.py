@@ -36,9 +36,10 @@ def report_generate_range():
 
 @report.post("/month")
 @input(ReportQueryMonthSchema)
-@doc(summary="Generate a report for a given month"
-, description="An endpoint to generate a report for a given month and year",
-responses=[200, 401]
+@doc(
+    summary="Generate a report for a given month",
+    description="An endpoint to generate a report for a given month and year",
+    responses=[200, 401],
 )
 @limiter.limit("1/minute")
 @jwt_required()
@@ -48,9 +49,10 @@ def report_generate_month():
 
 @report.post("/year")
 @input(ReportQueryYearSchema)
-@doc(summary="Generate a report for a given year",
-description="An endpoint to generate a report for a given year",
-responses=[200, 401]
+@doc(
+    summary="Generate a report for a given year",
+    description="An endpoint to generate a report for a given year",
+    responses=[200, 401],
 )
 @limiter.limit("1/minute")
 @jwt_required()

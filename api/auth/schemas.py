@@ -11,12 +11,14 @@ class UserSchemaLoad(Schema):
     )
     email = String(
         required=True,
-        validate=Email,
+        validate=Email(),
         metadata={"description": "Email should have a valid format"},
     )
     password = String(
         required=True,
-        validate=Regexp(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"),
+        validate=Regexp(
+            r"^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$"
+        ),
         metadata={
             "description": "Password should contain a minimum of eight characters, at least one email and one number"
         },
@@ -29,19 +31,19 @@ class UserSchemaDump(Schema):
         required=True,
         validate=Length(min=5, max=15),
     )
-    email = String(required=True, validate=Email)
+    email = String(required=True, validate=Email())
 
 
 class UserSchemaLoginLoad(Schema):
     email = String(
         required=True,
-        validate=Email,
+        validate=Email(),
         metadata={"description": "Email should have a valid format"},
     )
     password = String(
         required=True,
         metadata={
-            "description": "Password should contain a minimum of eight characters, at least one email and one number"
+            "description": "Password should contain a minimum of eight characters, at least one letter and one number"
         },
     )
 
@@ -52,5 +54,5 @@ class UserSchemaLoginDump(Schema):
         required=True,
         validate=Length(min=5, max=15),
     )
-    email = String(required=True, validate=Email)
+    email = String(required=True, validate=Email())
     token = String(required=True)

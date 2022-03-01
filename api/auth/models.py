@@ -7,6 +7,7 @@ class User(db.Model):
     __tablename__ = "vr_user"
 
     id = db.Column(db.Integer, primary_key=True)
+    public_id = db.Column(db.String(64), nullable=False, unique=True)
     username = db.Column(db.String(15), unique=True, nullable=False)
     email = db.Column(db.String(25), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)

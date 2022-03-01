@@ -18,20 +18,19 @@ auth = APIBlueprint("auth", __name__, url_prefix="/api/auth")
 
 
 @auth.post("/authenticate")
-@input(UserSchemaLoad)
-@output(UserSchemaDump)
+@input(UserSchemaLoginLoad)
+@output(UserSchemaLoginDump)
 @doc(
     summary="Authenticate user",
     description="An endpoint to generate a token for the user",
     responses=[200, 400, 404],
 )
 def user_authenticate(data):
-    user = User.find_user_by_email(data.email)
+    user = User.find_user_by_email(data["email"])
 
     if user:
         # Check user password
-        password_correct = user.check_password(data.password)
-
+        password_correct = user.check_password(data["password"])
         if password_correct:
             user.token = create_access_token(user.public_id)
             return user
@@ -40,8 +39,8 @@ def user_authenticate(data):
 
 
 @auth.post("/")
-@input(UserSchemaLoginLoad)
-@output(UserSchemaLoginDump)
+@input(UserSchemaLoad)
+@output(UserSchemaDump)
 @doc(summary="Create user", description="An endpoint to create a new user")
 def user_create(data):
     user = User(**data)

@@ -20,12 +20,16 @@ class Vehicle(db.Model):
     vehicle_type = db.Column(Enum(VehicleType), nullable=False)
     rented = db.Column(db.Boolean, default=False, nullable=False)
     rentals = db.relationship(
-        "Rental", back_populates="customer", cascade="all, delete"
+        "Rental",
+        backref="vehicle",
+        lazy=True,
+        cascade="all, delete",
+        passive_deletes=True,
     )
 
     @classmethod
     def get_vehicle_by_id(cls, id):
-        return cls.query.filter_by(id=id)
+        return cls.query.filter_by(id=id).first()
 
     @classmethod
     def get_all_rentals(cls):

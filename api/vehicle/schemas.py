@@ -32,7 +32,7 @@ class VehicleSchema(Schema):
     )
     vehicle_type = String(
         required=True,
-        validate=OneOf(["saloon", "bus", "motorcycle", "bicycle"]),
+        validate=OneOf(["saloon", "bus", "motor_cycle", "bicycle"]),
         metadata={"description": "The type of the vehicle"},
     )
     rented = Boolean(

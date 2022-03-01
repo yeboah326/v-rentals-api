@@ -32,7 +32,7 @@ def vehicle_create(data):
 @doc(
     summary="Get a vehicle by id",
     description="An endpoint to get a vehicle by id",
-    responses=[200, 400, 401, 404],
+    responses=[200, 401, 404],
 )
 @jwt_required()
 def vehicle_get_by_id(id):
@@ -48,13 +48,13 @@ def vehicle_get_by_id(id):
 @doc(
     summary="Get all vehicles",
     description="An endpoint to get all vehicles",
-    responses=[200, 400, 401],
+    responses=[200, 401],
 )
 @jwt_required()
 def vehicle_get_all():
     vehicles = Vehicle.get_all_rentals()
 
-    return vehicles, 200
+    return {"vehicles": vehicles}, 200
 
 
 @vehicle.put("/<int:id>")
@@ -90,7 +90,9 @@ def vehicle_modify_by_id(id, data):
 def vehicle_delete_by_id(id):
     vehicle = Vehicle.get_vehicle_by_id(id)
 
-    db.session.delete(vehicle)
-    db.session.commit()
+    if vehicle:
+        db.session.delete(vehicle)
+        db.session.commit()
 
-    return {"message": "Vehicle deleted successfully"}, 200
+        return {"message": "Vehicle deleted successfully"}, 200
+    raise HTTPError(404, "A vehicle with the given ID does not exist")

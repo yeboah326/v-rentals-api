@@ -88,7 +88,7 @@ def test_customer_get_by_id_success(client):
     authenticated_user = create_customer(client)
 
     # Created customer
-    created_customer = Customer.find_customer_by_email(customer_one['email'])
+    created_customer = Customer.find_customer_by_email(customer_one["email"])
 
     response = client.get(
         f"/api/customer/{created_customer.id}",
@@ -96,11 +96,11 @@ def test_customer_get_by_id_success(client):
     )
 
     assert response.status == "200 OK"
-    assert response.json['company'] == created_customer.company
-    assert response.json['email'] == created_customer.email
-    assert response.json['id'] == created_customer.id
-    assert response.json['name'] == created_customer.name
-    assert response.json['telephone'] == created_customer.telephone
+    assert response.json["company"] == created_customer.company
+    assert response.json["email"] == created_customer.email
+    assert response.json["id"] == created_customer.id
+    assert response.json["name"] == created_customer.name
+    assert response.json["telephone"] == created_customer.telephone
 
     truncate_db()
 
@@ -112,14 +112,12 @@ def test_customer_get_by_id_authentication_error(client):
     authenticated_user = create_customer(client)
 
     # Created customer
-    created_customer = Customer.find_customer_by_email(customer_one['email'])
+    created_customer = Customer.find_customer_by_email(customer_one["email"])
 
-    response = client.get(
-        f"/api/customer/{created_customer.id}"
-    )
+    response = client.get(f"/api/customer/{created_customer.id}")
 
     assert response.status == "401 UNAUTHORIZED"
-    assert response.json['message'] == "Missing Authorization Header"
+    assert response.json["message"] == "Missing Authorization Header"
 
     truncate_db()
 
@@ -131,7 +129,7 @@ def test_customer_get_by_id_not_found(client):
     authenticated_user = create_customer(client)
 
     # Created customer
-    created_customer = Customer.find_customer_by_email(customer_one['email'])
+    created_customer = Customer.find_customer_by_email(customer_one["email"])
 
     response = client.get(
         f"/api/customer/{created_customer.id + 1}",
@@ -139,7 +137,7 @@ def test_customer_get_by_id_not_found(client):
     )
 
     assert response.status == "404 NOT FOUND"
-    assert response.json['message'] == "A customer with the given ID does not exist"
+    assert response.json["message"] == "A customer with the given ID does not exist"
 
     truncate_db()
 
@@ -157,24 +155,23 @@ def test_customer_get_all_success(client):
 
     assert response.status == "200 OK"
     assert response.json["customers"][0]["company"] == customer_one["company"]
-    assert response.json["customers"][0]["email"] == customer_one["email"] 
-    assert response.json["customers"][0]["name"] == customer_one["name"] 
-    assert response.json["customers"][0]["telephone"] == customer_one["telephone"] 
-    
+    assert response.json["customers"][0]["email"] == customer_one["email"]
+    assert response.json["customers"][0]["name"] == customer_one["name"]
+    assert response.json["customers"][0]["telephone"] == customer_one["telephone"]
+
     truncate_db()
 
 
 def test_customer_get_all_authentication_error(client):
     truncate_db()
 
-    response = client.get(
-        f"/api/customer/"
-    )
+    response = client.get(f"/api/customer/")
 
     assert response.status == "401 UNAUTHORIZED"
-    assert response.json["message"] =="Missing Authorization Header"
+    assert response.json["message"] == "Missing Authorization Header"
 
     truncate_db()
+
 
 def test_customer_modify_by_id_success(client):
     truncate_db()
@@ -183,20 +180,20 @@ def test_customer_modify_by_id_success(client):
     authenticated_user = create_customer(client)
 
     # Created customer
-    created_customer = Customer.find_customer_by_email(customer_one['email'])
+    created_customer = Customer.find_customer_by_email(customer_one["email"])
 
     response = client.put(
         f"/api/customer/{created_customer.id}",
         headers={"Authorization": f"Bearer {authenticated_user['token']}"},
-        json=customer_two
+        json=customer_two,
     )
 
     assert response.status == "200 OK"
     assert response.json["company"] == customer_two["company"]
-    assert response.json["email"] == customer_two["email"] 
-    assert response.json["name"] == customer_two["name"] 
-    assert response.json["telephone"] == customer_two["telephone"] 
-    
+    assert response.json["email"] == customer_two["email"]
+    assert response.json["name"] == customer_two["name"]
+    assert response.json["telephone"] == customer_two["telephone"]
+
     truncate_db()
 
 
@@ -207,7 +204,7 @@ def test_customer_modify_by_id_validation_error(client):
     authenticated_user = create_customer(client)
 
     # Created customer
-    created_customer = Customer.find_customer_by_email(customer_one['email'])
+    created_customer = Customer.find_customer_by_email(customer_one["email"])
 
     response = client.put(
         f"/api/customer/{created_customer.id}",
@@ -215,14 +212,16 @@ def test_customer_modify_by_id_validation_error(client):
         json={
             "company": customer_two["company"],
             "email": customer_two["email"],
-            "telephone": customer_two["telephone"]
-        }
+            "telephone": customer_two["telephone"],
+        },
     )
 
     assert response.status == "400 BAD REQUEST"
-    assert response.json['detail'] == {'json': {'name': ['Missing data for required field.']}}
-    assert response.json['message'] == 'Validation error'
-    
+    assert response.json["detail"] == {
+        "json": {"name": ["Missing data for required field."]}
+    }
+    assert response.json["message"] == "Validation error"
+
     truncate_db()
 
 
@@ -233,17 +232,13 @@ def test_customer_modify_by_id_authentication_error(client):
     authenticated_user = create_customer(client)
 
     # Created customer
-    created_customer = Customer.find_customer_by_email(customer_one['email'])
+    created_customer = Customer.find_customer_by_email(customer_one["email"])
 
-    response = client.put(
-        f"/api/customer/{created_customer.id}",
-        json=customer_two
-    )
-
+    response = client.put(f"/api/customer/{created_customer.id}", json=customer_two)
 
     assert response.status == "401 UNAUTHORIZED"
-    assert response.json['message'] == "Missing Authorization Header"
-    
+    assert response.json["message"] == "Missing Authorization Header"
+
     truncate_db()
 
 
@@ -254,18 +249,17 @@ def test_customer_modify_by_id_not_found(client):
     authenticated_user = create_customer(client)
 
     # Created customer
-    created_customer = Customer.find_customer_by_email(customer_one['email'])
+    created_customer = Customer.find_customer_by_email(customer_one["email"])
 
     response = client.put(
         f"/api/customer/{created_customer.id + 1}",
         headers={"Authorization": f"Bearer {authenticated_user['token']}"},
-        json=customer_two
+        json=customer_two,
     )
 
-
     assert response.status == "404 NOT FOUND"
-    assert response.json['message'] == "A customer with the given ID does not exist"
-    
+    assert response.json["message"] == "A customer with the given ID does not exist"
+
     truncate_db()
 
 
@@ -276,17 +270,16 @@ def test_customer_delete_by_id_success(client):
     authenticated_user = create_customer(client)
 
     # Created customer
-    created_customer = Customer.find_customer_by_email(customer_one['email'])
+    created_customer = Customer.find_customer_by_email(customer_one["email"])
 
     response = client.delete(
         f"/api/customer/{created_customer.id}",
         headers={"Authorization": f"Bearer {authenticated_user['token']}"},
     )
 
-    
     assert response.status == "200 OK"
-    assert response.json['message'] == "Customer deleted successfully"
-    
+    assert response.json["message"] == "Customer deleted successfully"
+
     truncate_db()
 
 
@@ -297,16 +290,13 @@ def test_customer_delete_by_id_authentication_error(client):
     authenticated_user = create_customer(client)
 
     # Created customer
-    created_customer = Customer.find_customer_by_email(customer_one['email'])
+    created_customer = Customer.find_customer_by_email(customer_one["email"])
 
-    response = client.delete(
-        f"/api/customer/{created_customer.id}"
-    )
+    response = client.delete(f"/api/customer/{created_customer.id}")
 
-    
     assert response.status == "401 UNAUTHORIZED"
-    assert response.json['message'] == "Missing Authorization Header"
-    
+    assert response.json["message"] == "Missing Authorization Header"
+
     truncate_db()
 
 
@@ -317,15 +307,14 @@ def test_customer_delete_by_id_not_found(client):
     authenticated_user = create_customer(client)
 
     # Created customer
-    created_customer = Customer.find_customer_by_email(customer_one['email'])
+    created_customer = Customer.find_customer_by_email(customer_one["email"])
 
     response = client.delete(
         f"/api/customer/{created_customer.id + 1}",
         headers={"Authorization": f"Bearer {authenticated_user['token']}"},
     )
 
-    
     assert response.status == "404 NOT FOUND"
-    assert response.json['message'] == "A customer with the given ID does not exist"
-    
+    assert response.json["message"] == "A customer with the given ID does not exist"
+
     truncate_db()

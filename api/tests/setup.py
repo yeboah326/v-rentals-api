@@ -1,5 +1,5 @@
 from api import db
-from .data import user_one, user_two, customer_one
+from .data import user_one, customer_one, vehicle_one
 
 
 def truncate_db():
@@ -46,3 +46,15 @@ def create_customer(client):
     )
 
     return authenticated_user
+
+
+def create_vehicle(client):
+    authenticated_user = authenticate_user(client)
+
+    response = client.post(
+        "/api/vehicle/",
+        json=vehicle_one,
+        headers={"Authorization": f"Bearer {authenticated_user['token']}"},
+    )
+
+    return {"authenticated_user": authenticated_user, "vehicle": response.json}

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: dd96b76865ad
+Revision ID: af739a9cb848
 Revises: 
-Create Date: 2022-02-25 16:42:37.165522
+Create Date: 2022-02-28 17:02:59.424043
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'dd96b76865ad'
+revision = 'af739a9cb848'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -38,7 +38,7 @@ def upgrade():
     )
     op.create_table('vr_vehicle',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(), nullable=False),
+    sa.Column('name', sa.String(length=50), nullable=False),
     sa.Column('cost_per_day', sa.Numeric(precision=6, scale=2), nullable=False),
     sa.Column('penalty_per_day', sa.Numeric(precision=6, scale=2), nullable=False),
     sa.Column('vehicle_type', sa.Enum('saloon', 'bus', 'motor_cycle', 'bicycle', name='vehicletype'), nullable=False),
@@ -47,15 +47,15 @@ def upgrade():
     )
     op.create_table('vr_rental',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('vehicle_id', sa.Integer(), nullable=True),
-    sa.Column('customer_id', sa.Integer(), nullable=True),
+    sa.Column('vehicle_id', sa.Integer(), nullable=False),
+    sa.Column('customer_id', sa.Integer(), nullable=False),
     sa.Column('start_date', sa.Date(), nullable=False),
     sa.Column('proposed_return_date', sa.Date(), nullable=False),
     sa.Column('actual_return_date', sa.Date(), nullable=True),
     sa.Column('actual_charge', sa.Numeric(precision=7, scale=2), nullable=True),
     sa.Column('penalty_charge', sa.Numeric(precision=6, scale=2), nullable=True),
-    sa.ForeignKeyConstraint(['customer_id'], ['vr_customer.id'], ),
-    sa.ForeignKeyConstraint(['vehicle_id'], ['vr_vehicle.id'], ),
+    sa.ForeignKeyConstraint(['customer_id'], ['vr_customer.id'], ondelete='cascade'),
+    sa.ForeignKeyConstraint(['vehicle_id'], ['vr_vehicle.id'], ondelete='cascade'),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

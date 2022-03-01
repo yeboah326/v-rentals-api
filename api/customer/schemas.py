@@ -12,7 +12,7 @@ class CustomerSchema(Schema):
     )
     email = String(
         required=True,
-        validate=[Email, Length(max=30)],
+        validate=[Email(), Length(max=30)],
         metadata={"description": "Email should have a valid format"},
     )
     telephone = String(

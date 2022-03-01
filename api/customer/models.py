@@ -10,20 +10,24 @@ class Customer(db.Model):
     telephone = db.Column(db.String(10), nullable=False)
     company = db.Column(db.String(40), nullable=False)
     rentals = db.relationship(
-        "Rental", back_populates="customer", cascade="all, delete"
+        "Rental",
+        backref="customer",
+        lazy=True,
+        cascade="all, delete",
+        passive_deletes=True,
     )
 
     @classmethod
-    def find_customer_by_id(cls, public_id):
-        return cls.query.filter_by(public_id=public_id).first()
+    def find_customer_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()
 
     @classmethod
     def find_customer_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
 
     @classmethod
-    def get_all_customer_rentals(cls, public_id):
-        return cls.query.filter_by(public_id=public_id).first().rentals
+    def get_all_customer_rentals(cls, id):
+        return cls.query.filter_by(id=id).first().rentals
 
     @classmethod
     def get_all_customers(cls):

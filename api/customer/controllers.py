@@ -24,13 +24,15 @@ def customer_create(data):
     db.session.add(customer)
     db.session.commit()
 
+    return customer
+
 
 @customer.get("/<int:id>")
 @output(CustomerSchema)
 @doc(
     summary="Get customer by id",
     description="An endpoint to a customer by id",
-    responses=[200, 400, 401, 404],
+    responses=[200, 401, 404],
 )
 @jwt_required()
 def customer_get_by_id(id):
@@ -52,10 +54,11 @@ def customer_get_by_id(id):
 def customer_get_all():
     customers = Customer.get_all_customers()
 
-    return customers
+    return {"customers": customers}
 
 
 @customer.put("/<int:id>")
+@input(CustomerSchema)
 @output(CustomerSchema)
 @doc(
     summary="Modify customer",
@@ -82,7 +85,7 @@ def customer_modify_by_id(id, data):
 @doc(
     summary="Delete customer",
     description="An endpoint to delete a user by id",
-    responses=[200, 400, 401, 404],
+    responses=[200, 401, 404],
 )
 @jwt_required()
 def customer_delete_by_id(id):

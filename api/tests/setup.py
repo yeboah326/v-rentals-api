@@ -21,8 +21,6 @@ def create_user(client):
 
 
 def authenticate_user(client):
-    create_user(client)
-
     response = client.post(
         "/api/auth/authenticate",
         json={"email": user_one["email"], "password": user_one["password"]},
@@ -31,9 +29,7 @@ def authenticate_user(client):
     return response.json
 
 
-def create_customer(client):
-    authenticated_user = authenticate_user(client)
-
+def create_customer(client, token):
     response = client.post(
         "/api/customer/",
         json={
@@ -42,19 +38,18 @@ def create_customer(client):
             "name": customer_one["name"],
             "telephone": customer_one["telephone"],
         },
-        headers={"Authorization": f"Bearer {authenticated_user['token']}"},
+        headers={"Authorization": f"Bearer {token}"},
     )
 
-    return authenticated_user
+    return response
 
 
-def create_vehicle(client):
-    authenticated_user = authenticate_user(client)
-
+def create_vehicle(client, token):
     response = client.post(
         "/api/vehicle/",
         json=vehicle_one,
-        headers={"Authorization": f"Bearer {authenticated_user['token']}"},
+        headers={"Authorization": f"Bearer {token}"},
     )
 
-    return {"authenticated_user": authenticated_user, "vehicle": response.json}
+    return response.json
+

@@ -1,11 +1,12 @@
 from api.vehicle.models import Vehicle
-from .setup import authenticate_user, truncate_db, create_vehicle
+from .setup import authenticate_user, truncate_db, create_vehicle, create_user
 from .data import vehicle_one, vehicle_two
 
 
 def test_vehicle_create_success(client):
     truncate_db()
 
+    create_user(client)
     authenticated_user = authenticate_user(client)
 
     response = client.post(
@@ -29,6 +30,7 @@ def test_vehicle_create_success(client):
 def test_vehicle_create_validation_error(client):
     truncate_db()
 
+    create_user(client)
     authenticated_user = authenticate_user(client)
 
     response = client.post(
@@ -54,6 +56,7 @@ def test_vehicle_create_validation_error(client):
 def test_vehicle_create_authentication_error(client):
     truncate_db()
 
+    create_user(client)
     authenticated_user = authenticate_user(client)
 
     response = client.post(
@@ -70,10 +73,9 @@ def test_vehicle_create_authentication_error(client):
 def test_vehicle_get_by_id_success(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.get(
         f"/api/vehicle/{vehicle['id']}",
@@ -92,10 +94,9 @@ def test_vehicle_get_by_id_success(client):
 def test_vehicle_get_by_id_authentication_error(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.get(f"/api/vehicle/{vehicle['id']}")
 
@@ -108,10 +109,9 @@ def test_vehicle_get_by_id_authentication_error(client):
 def test_vehicle_get_by_id_not_found(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.get(
         f"/api/vehicle/{vehicle['id'] + 1}",
@@ -127,10 +127,9 @@ def test_vehicle_get_by_id_not_found(client):
 def test_vehicle_get_all_success(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.get(
         f"/api/vehicle/",
@@ -146,10 +145,9 @@ def test_vehicle_get_all_success(client):
 def test_vehicle_get_all_authentication_error(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.get("/api/vehicle/")
 
@@ -162,10 +160,9 @@ def test_vehicle_get_all_authentication_error(client):
 def test_vehicle_modify_by_id_success(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.put(
         f"/api/vehicle/{vehicle['id']}",
@@ -185,10 +182,9 @@ def test_vehicle_modify_by_id_success(client):
 def test_vehicle_modify_by_id_validation_error(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.put(
         f"/api/vehicle/{vehicle['id']}",
@@ -213,10 +209,9 @@ def test_vehicle_modify_by_id_validation_error(client):
 def test_vehicle_modify_by_id_authentication_error(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.put(
         f"/api/vehicle/{vehicle['id']}",
@@ -232,10 +227,9 @@ def test_vehicle_modify_by_id_authentication_error(client):
 def test_vehicle_modify_by_id_not_found(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.put(
         f"/api/vehicle/{vehicle['id'] + 1}",
@@ -252,10 +246,9 @@ def test_vehicle_modify_by_id_not_found(client):
 def test_vehicle_delete_by_id_success(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.delete(
         f"/api/vehicle/{vehicle['id']}",
@@ -274,17 +267,13 @@ def test_vehicle_delete_by_id_success(client):
 def test_vehicle_delete_by_id_authentication_error(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.delete(
         f"/api/vehicle/{vehicle['id']}",
     )
-
-    print(response.status)
-    print(response.json)
 
     assert response.status == "401 UNAUTHORIZED"
     assert response.json["message"] == "Missing Authorization Header"
@@ -295,10 +284,9 @@ def test_vehicle_delete_by_id_authentication_error(client):
 def test_vehicle_delete_by_id_not_found(client):
     truncate_db()
 
-    # Get the authenticated user and created vehicle
-    user_and_vehicle = create_vehicle(client)
-    authenticated_user = user_and_vehicle["authenticated_user"]
-    vehicle = user_and_vehicle["vehicle"]
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    vehicle = create_vehicle(client,authenticated_user['token'])
 
     response = client.delete(
         f"/api/vehicle/{vehicle['id'] + 1}",

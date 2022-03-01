@@ -1,6 +1,6 @@
 from math import trunc
 from api.customer.models import Customer
-from .setup import truncate_db, authenticate_user, create_customer
+from .setup import create_user, truncate_db, authenticate_user, create_customer
 from .data import customer_one, customer_two
 
 
@@ -8,6 +8,7 @@ def test_customer_create_success(client):
     truncate_db()
 
     # Authenticate created user
+    create_user(client)
     authenticated_user = authenticate_user(client)
 
     response = client.post(
@@ -38,6 +39,7 @@ def test_customer_create_validation_error(client):
     truncate_db()
 
     # Authenticate created user
+    create_user(client)
     authenticated_user = authenticate_user(client)
 
     response = client.post(
@@ -63,6 +65,7 @@ def test_customer_create_authentication_error(client):
     truncate_db()
 
     # Authenticate created user
+    create_user(client)
     authenticated_user = authenticate_user(client)
 
     response = client.post(
@@ -85,7 +88,9 @@ def test_customer_get_by_id_success(client):
     truncate_db()
 
     # Authenticated user
-    authenticated_user = create_customer(client)
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
 
     # Created customer
     created_customer = Customer.find_customer_by_email(customer_one["email"])
@@ -109,7 +114,9 @@ def test_customer_get_by_id_authentication_error(client):
     truncate_db()
 
     # Authenticated user
-    authenticated_user = create_customer(client)
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
 
     # Created customer
     created_customer = Customer.find_customer_by_email(customer_one["email"])
@@ -126,7 +133,9 @@ def test_customer_get_by_id_not_found(client):
     truncate_db()
 
     # Authenticated user
-    authenticated_user = create_customer(client)
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
 
     # Created customer
     created_customer = Customer.find_customer_by_email(customer_one["email"])
@@ -146,7 +155,9 @@ def test_customer_get_all_success(client):
     truncate_db()
 
     # Authenticated user
-    authenticated_user = create_customer(client)
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
 
     response = client.get(
         f"/api/customer/",
@@ -165,6 +176,10 @@ def test_customer_get_all_success(client):
 def test_customer_get_all_authentication_error(client):
     truncate_db()
 
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
+
     response = client.get(f"/api/customer/")
 
     assert response.status == "401 UNAUTHORIZED"
@@ -177,7 +192,9 @@ def test_customer_modify_by_id_success(client):
     truncate_db()
 
     # Authenticated user
-    authenticated_user = create_customer(client)
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
 
     # Created customer
     created_customer = Customer.find_customer_by_email(customer_one["email"])
@@ -201,7 +218,9 @@ def test_customer_modify_by_id_validation_error(client):
     truncate_db()
 
     # Authenticated user
-    authenticated_user = create_customer(client)
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
 
     # Created customer
     created_customer = Customer.find_customer_by_email(customer_one["email"])
@@ -229,7 +248,9 @@ def test_customer_modify_by_id_authentication_error(client):
     truncate_db()
 
     # Authenticated user
-    authenticated_user = create_customer(client)
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
 
     # Created customer
     created_customer = Customer.find_customer_by_email(customer_one["email"])
@@ -246,7 +267,9 @@ def test_customer_modify_by_id_not_found(client):
     truncate_db()
 
     # Authenticated user
-    authenticated_user = create_customer(client)
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
 
     # Created customer
     created_customer = Customer.find_customer_by_email(customer_one["email"])
@@ -267,7 +290,9 @@ def test_customer_delete_by_id_success(client):
     truncate_db()
 
     # Authenticated user
-    authenticated_user = create_customer(client)
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
 
     # Created customer
     created_customer = Customer.find_customer_by_email(customer_one["email"])
@@ -287,7 +312,9 @@ def test_customer_delete_by_id_authentication_error(client):
     truncate_db()
 
     # Authenticated user
-    authenticated_user = create_customer(client)
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
 
     # Created customer
     created_customer = Customer.find_customer_by_email(customer_one["email"])
@@ -304,7 +331,9 @@ def test_customer_delete_by_id_not_found(client):
     truncate_db()
 
     # Authenticated user
-    authenticated_user = create_customer(client)
+    create_user(client)
+    authenticated_user = authenticate_user(client)
+    create_customer(client, authenticated_user['token'])
 
     # Created customer
     created_customer = Customer.find_customer_by_email(customer_one["email"])

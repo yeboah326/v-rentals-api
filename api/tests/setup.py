@@ -1,5 +1,5 @@
 from api import db
-from .data import user_one, customer_one, vehicle_one
+from .data import user_one, customer_one, vehicle_one, rental_one
 
 
 def truncate_db():
@@ -41,7 +41,7 @@ def create_customer(client, token):
         headers={"Authorization": f"Bearer {token}"},
     )
 
-    return response
+    return response.json
 
 
 def create_vehicle(client, token):
@@ -53,3 +53,20 @@ def create_vehicle(client, token):
 
     return response.json
 
+
+def create_rental(client, vehicle, customer, token):
+    response = client.post(
+        "/api/rental/",
+        json={
+            "vehicle_id": vehicle["id"],
+            "customer_id": customer["id"],
+            "start_date": rental_one["start_date"].strftime("%Y-%m-%d"),
+            "proposed_return_date": rental_one["proposed_return_date"].strftime(
+                "%Y-%m-%d"
+            ),
+            "actual_return_date": rental_one["actual_return_date"].strftime("%Y-%m-%d"),
+        },
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    return response.json

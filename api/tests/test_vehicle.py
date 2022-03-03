@@ -75,7 +75,7 @@ def test_vehicle_get_by_id_success(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.get(
         f"/api/vehicle/{vehicle['id']}",
@@ -96,7 +96,7 @@ def test_vehicle_get_by_id_authentication_error(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.get(f"/api/vehicle/{vehicle['id']}")
 
@@ -111,7 +111,7 @@ def test_vehicle_get_by_id_not_found(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.get(
         f"/api/vehicle/{vehicle['id'] + 1}",
@@ -129,7 +129,7 @@ def test_vehicle_get_all_success(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.get(
         f"/api/vehicle/",
@@ -147,7 +147,7 @@ def test_vehicle_get_all_authentication_error(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.get("/api/vehicle/")
 
@@ -162,7 +162,7 @@ def test_vehicle_modify_by_id_success(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.put(
         f"/api/vehicle/{vehicle['id']}",
@@ -184,7 +184,7 @@ def test_vehicle_modify_by_id_validation_error(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.put(
         f"/api/vehicle/{vehicle['id']}",
@@ -211,7 +211,7 @@ def test_vehicle_modify_by_id_authentication_error(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.put(
         f"/api/vehicle/{vehicle['id']}",
@@ -229,7 +229,7 @@ def test_vehicle_modify_by_id_not_found(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.put(
         f"/api/vehicle/{vehicle['id'] + 1}",
@@ -248,7 +248,7 @@ def test_vehicle_delete_by_id_success(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.delete(
         f"/api/vehicle/{vehicle['id']}",
@@ -269,7 +269,7 @@ def test_vehicle_delete_by_id_authentication_error(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.delete(
         f"/api/vehicle/{vehicle['id']}",
@@ -286,7 +286,7 @@ def test_vehicle_delete_by_id_not_found(client):
 
     create_user(client)
     authenticated_user = authenticate_user(client)
-    vehicle = create_vehicle(client,authenticated_user['token'])
+    vehicle = create_vehicle(client, authenticated_user["token"])
 
     response = client.delete(
         f"/api/vehicle/{vehicle['id'] + 1}",

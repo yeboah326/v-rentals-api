@@ -17,13 +17,14 @@ class UserSchemaLoad(Schema):
     password = String(
         required=True,
         validate=Regexp(
-            r"^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$"
+            r"^(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z])(?=.*[A-Z]).{8,}$"
         ),
         metadata={
-            "description": "Password should contain a minimum of eight characters, at least one email and one number"
+            "description": "Password should contain a minimum of eight characters, at least two numbers, two lowercase characters and one uppercase character"
         },
+        error_messages={"null": "Field may not be null"}
     )
-
+# TODO: Fix metadata error message
 
 class UserSchemaDump(Schema):
     public_id = String(required=True, validate=Length(equal=64))
@@ -39,12 +40,14 @@ class UserSchemaLoginLoad(Schema):
         required=True,
         validate=Email(),
         metadata={"description": "Email should have a valid format"},
+        error_messages={"required": "Email is required to login"}
     )
     password = String(
         required=True,
         metadata={
             "description": "Password should contain a minimum of eight characters, at least one letter and one number"
         },
+        error_messages={"required": "Password is required to login"}
     )
 
 

@@ -38,15 +38,20 @@ def user_authenticate(data):
     raise HTTPError(404, message="A user with the given email does not exist")
 
 
-@auth.post("/")
+@auth.post("/create")
 @input(UserSchemaLoad)
 @output(UserSchemaDump)
 @doc(summary="Create user", description="An endpoint to create a new user")
 def user_create(data):
-    user = User(**data)
+    user = User.find_user_by_email(data["email"])
+    if not user:
+        user = User(**data)
 
-    # Save to the database
-    db.session.add(user)
-    db.session.commit()
+        # Save to the database
+        db.session.add(user)
+        db.session.commit()
 
-    return user, 200
+        return user, 200
+    raise HTTPError(400, message="A user with the given email already exists")
+
+# TODO: Create custom error classes

@@ -8,7 +8,7 @@ from .schemas import (
     UserSchemaLoginDump,
     UserSchemaLoginLoad,
 )
-
+from datetime import timedelta
 auth = APIBlueprint("auth", __name__, url_prefix="/api/auth")
 
 # @auth.get("/home")
@@ -32,7 +32,7 @@ def user_authenticate(data):
         # Check user password
         password_correct = user.check_password(data["password"])
         if password_correct:
-            user.token = create_access_token(user.public_id)
+            user.token = create_access_token(user.public_id, expires_delta=timedelta(hours=2))
             return user
         raise HTTPError(400, message="Either the username or password is wrong")
     raise HTTPError(404, message="A user with the given email does not exist")

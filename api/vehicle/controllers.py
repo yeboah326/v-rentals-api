@@ -2,8 +2,8 @@ from apiflask import APIBlueprint, input, output, doc, HTTPError
 from api.extensions import db
 from api.generic import GenericResponse
 from flask_jwt_extended import jwt_required
-from .models import Vehicle
-from .schemas import VehicleSchema, VehiclesSchema
+from .models import Vehicle, VehicleType
+from .schemas import VehicleSchema, VehiclesSchema, VehicleTypesSchema
 
 vehicle = APIBlueprint("vehicle", __name__, url_prefix="/api/vehicle")
 
@@ -55,6 +55,18 @@ def vehicle_get_all():
     vehicles = Vehicle.get_all_rentals()
 
     return {"vehicles": vehicles}, 200
+
+# TODO: Add test for this endpoint
+@vehicle.get("/types")
+@output(VehicleTypesSchema)
+@doc(
+    summary="Get all vehicle types",
+    description="An endpoint to get all vehicle types",
+    responses=[200, 401]
+)
+@jwt_required()
+def vehicle_get_all_types():
+    return VehicleType.to_list()
 
 
 @vehicle.put("/<int:id>")

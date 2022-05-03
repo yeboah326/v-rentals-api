@@ -1,6 +1,9 @@
+from typing_extensions import Required
 from apiflask import Schema
 from apiflask.fields import Integer, String, Float, Boolean, List, Nested
 from apiflask.validators import Length, OneOf, Range
+
+from api.vehicle.models import VehicleType
 
 
 class VehicleSchema(Schema):
@@ -51,3 +54,10 @@ class VehicleSchema(Schema):
 
 class VehiclesSchema(Schema):
     vehicles = List(Nested(VehicleSchema))
+
+class VehicleTypeSchema(Schema):
+    name = String(required=True, metadata={"description": "The name of the vehicle type"})
+    id = Integer(required=True, metadata={"description": "The id of the vehicle type"})
+
+class VehicleTypesSchema(Schema):
+    vehicles = List(Nested(VehicleTypeSchema))

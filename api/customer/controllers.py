@@ -10,11 +10,11 @@ customer = APIBlueprint("customer", __name__, url_prefix="/api/customer")
 
 @customer.post("/")
 @input(CustomerSchema)
-@output(CustomerSchema)
+@output(CustomerSchema, status_code=201)
 @doc(
     summary="Create customer",
     description="An endpoint to create a new customer",
-    responses=[200, 400, 401],
+    responses=[201, 400, 401],
 )
 @jwt_required()
 def customer_create(data):

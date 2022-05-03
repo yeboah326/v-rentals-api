@@ -9,11 +9,11 @@ rental = APIBlueprint("rental", __name__, url_prefix="/api/rental")
 
 @rental.post("/")
 @input(RentalSchema)
-@output(RentalSchema)
+@output(RentalSchema, status_code=201)
 @doc(
     summary="Create rental",
     description="An endpoint to create a new rental",
-    responses=[200, 400, 401],
+    responses=[201, 400, 401],
 )
 @jwt_required()
 def rental_create(data):
@@ -25,7 +25,7 @@ def rental_create(data):
     db.session.add(rental)
     db.session.commit()
 
-    return rental, 200
+    return rental
 
 
 @rental.get("/<int:id>")

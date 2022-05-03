@@ -10,11 +10,11 @@ vehicle = APIBlueprint("vehicle", __name__, url_prefix="/api/vehicle")
 
 @vehicle.post("/")
 @input(VehicleSchema)
-@output(VehicleSchema)
+@output(VehicleSchema, status_code=201)
 @doc(
     summary="Create a vehicle",
     description="An endpoint for the creation of vehicles",
-    responses=[200, 400, 401],
+    responses=[201, 400, 401],
 )
 @jwt_required()
 def vehicle_create(data):

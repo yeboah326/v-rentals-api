@@ -30,6 +30,12 @@ class VehicleSchema(Schema):
             "description": "The cost of renting the vehicle per day after the proposed return date"
         },
     )
+    registration_number = String(
+        required=True,
+        metadata={
+            "description": "The number on the cars registration plate"
+        }
+    )
     vehicle_type = String(
         required=True,
         validate=OneOf(["saloon", "bus", "motor_cycle", "bicycle"]),
